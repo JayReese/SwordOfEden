@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/TG_BulletPatterns.unity
+  isLoaded: 1
+  isActive: 1
