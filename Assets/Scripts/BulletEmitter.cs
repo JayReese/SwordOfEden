@@ -25,28 +25,28 @@ public class BulletEmitter : MonoBehaviour
 
         Meme = 0;
 
-
-
         //TranslationVector = Quaternion.AngleAxis(Time.deltaTime * (MovementSpeed * 10), Vector3.forward) * TranslationVector;
         TranslationVector = Quaternion.AngleAxis(360, Vector3.forward) * TranslationVector;
         transform.position = FocalPoint + TranslationVector;
+        //transform.Rotate(0, 0, transform.rotation.z + 25f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Meme < MaxMeme)
+        if (Meme <= MaxMeme)
             Meme = Time.time * RotationTime;
 
         Movement();
-        Debug.Log(string.Format("Clamp: {0}, Meme: {1}", Mathf.Clamp(Time.time * RotationTime, 0, 360), Meme));
+        //Debug.Log(string.Format("Clamp: {0}, Meme: {1}", Mathf.Clamp(Time.time * RotationTime, 0, 360), Meme));
         //transform.LookAt(transform.parent.transform);
+
     }
 
     void Movement()
     {
         //Rotation();
-        //Spin();
+        Spin();
     }
 
     private void Rotation()
@@ -59,7 +59,8 @@ public class BulletEmitter : MonoBehaviour
 
     private void Spin()
     {
-        transform.Rotate(0, 0, RotationAmount * Time.deltaTime * RotationTime);
+        //transform.Rotate(0, 0, transform.rotation.z + Meme);
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z);
     }
 
     private void Translation()
