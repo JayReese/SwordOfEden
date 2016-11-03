@@ -11,7 +11,7 @@ public class BulletEmitter : MonoBehaviour
     [SerializeField]
     float MovementSpeed,
         RotationAmount, RotationTime,
-        Meme;
+        Meme, RotCounter, RotationDirection;
     const float MaxMeme = 360f;
 
     // Use this for initialization
@@ -20,7 +20,9 @@ public class BulletEmitter : MonoBehaviour
         StoredBullet = Resources.Load("Prefabs/Test Prefabs/testbullet") as GameObject;
         gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Prefabs/Test Prefabs/testbullet") as Sprite;
         //Instantiate(StoredBullet, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180));
-        //InvokeRepeating("CreateBullet", 0.5f, 0.05f);
+        InvokeRepeating("CreateBullet", 0.5f, 0.05f);
+        RotCounter = 7.0f;
+        RotationDirection = 1;
         SetDefaults();
 
         Meme = 0;
@@ -37,22 +39,36 @@ public class BulletEmitter : MonoBehaviour
         if (Meme <= MaxMeme)
             Meme = Time.time * RotationTime;
 
+        if (RotCounter > 0)
+        {
+            RotCounter -= Time.deltaTime * 2f;
+        }
+        else
+            ChangeRot();
+            
+
         Movement();
         //Debug.Log(string.Format("Clamp: {0}, Meme: {1}", Mathf.Clamp(Time.time * RotationTime, 0, 360), Meme));
         //transform.LookAt(transform.parent.transform);
 
     }
 
+    private void ChangeRot()
+    {
+        RotCounter = 7.0f;
+        RotationDirection *= -1;
+    }
+
     void Movement()
     {
-        //Rotation();
-        Spin();
+        Rotation();
+        //Spin();
     }
 
     private void Rotation()
     {
         MaintainOrientation();
-        TranslationVector = Quaternion.AngleAxis(Time.deltaTime * (MovementSpeed * 10), Vector3.forward) * TranslationVector;
+        TranslationVector = Quaternion.AngleAxis(Time.deltaTime * (MovementSpeed * 10), Vector3.forward * RotationDirection) * TranslationVector;
 
         transform.position = FocalPoint + TranslationVector;
     }
@@ -60,7 +76,7 @@ public class BulletEmitter : MonoBehaviour
     private void Spin()
     {
         //transform.Rotate(0, 0, transform.rotation.z + Meme);
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z);
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z + Time.deltaTime * 10f);
     }
 
     private void Translation()
@@ -82,7 +98,7 @@ public class BulletEmitter : MonoBehaviour
 
     void SetDefaults()
     {
-        MovementSpeed = 0;
+        MovementSpeed = 15f;
         RotationTime = 30f;
         RotationAmount = transform.rotation.z;
         FocalPoint = transform.parent.transform.position;
