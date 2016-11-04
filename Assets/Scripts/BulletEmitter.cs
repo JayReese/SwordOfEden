@@ -14,13 +14,18 @@ public class BulletEmitter : MonoBehaviour
         Meme, RotCounter, RotationDirection;
     const float MaxMeme = 360f;
 
+    void Awake()
+    {
+        //transform.Rotate(new Vector3(0, 0, 360f));
+    }
+
     // Use this for initialization
     void Start()
     {
         StoredBullet = Resources.Load("Prefabs/Test Prefabs/testbullet") as GameObject;
         gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Prefabs/Test Prefabs/testbullet") as Sprite;
         //Instantiate(StoredBullet, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180));
-        InvokeRepeating("CreateBullet", 0.5f, 0.05f);
+        //InvokeRepeating("CreateBullet", 0.5f, 0.05f);
         RotCounter = 7.0f;
         RotationDirection = 1;
         SetDefaults();
@@ -28,7 +33,7 @@ public class BulletEmitter : MonoBehaviour
         Meme = 0;
 
         //TranslationVector = Quaternion.AngleAxis(Time.deltaTime * (MovementSpeed * 10), Vector3.forward) * TranslationVector;
-        TranslationVector = Quaternion.AngleAxis(360, Vector3.forward) * TranslationVector;
+        TranslationVector = Quaternion.AngleAxis(20, Vector3.forward) * TranslationVector;
         transform.position = FocalPoint + TranslationVector;
         //transform.Rotate(0, 0, transform.rotation.z + 25f);
     }
@@ -36,15 +41,13 @@ public class BulletEmitter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Meme <= MaxMeme)
-            Meme = Time.time * RotationTime;
+        //if (Meme <= MaxMeme)
+        //    Meme = Time.time * RotationTime;
 
-        if (RotCounter > 0)
-        {
-            RotCounter -= Time.deltaTime * 2f;
-        }
-        else
-            ChangeRot();
+        //if (RotCounter > 0)
+        //    RotCounter -= Time.deltaTime * 2f;
+        //else
+        //    ChangeRot();
             
 
         Movement();
@@ -61,7 +64,7 @@ public class BulletEmitter : MonoBehaviour
 
     void Movement()
     {
-        Rotation();
+        //Rotation();
         //Spin();
     }
 
