@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class BulletEmitter : MonoBehaviour
@@ -11,31 +12,46 @@ public class BulletEmitter : MonoBehaviour
     [SerializeField]
     float MovementSpeed,
         RotationAmount, RotationTime,
-        Meme, RotCounter, RotationDirection;
+        Meme, RotCounter, RotationDirection,
+        DegreeOfSeparation, NumberOfSpawners;
     const float MaxMeme = 360f;
+    [SerializeField]
+    List<Vector3> BulletOrientations;
+    [SerializeField]
+    List<GameObject> BulletPrefabs;
+
 
     void Awake()
     {
+        StoredBullet = Resources.Load("Prefabs/Test Prefabs/testbullet") as GameObject;
+        BulletOrientations = new List<Vector3>();
         //transform.Rotate(new Vector3(0, 0, 360f));
+
+        CreateOrientations();
+        BulletPrefabs = new List<GameObject>();
+        CreateBullet();
     }
 
     // Use this for initialization
     void Start()
     {
-        StoredBullet = Resources.Load("Prefabs/Test Prefabs/testbullet") as GameObject;
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Prefabs/Test Prefabs/testbullet") as Sprite;
+        //gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Prefabs/Test Prefabs/testbullet") as Sprite;
         //Instantiate(StoredBullet, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180));
         //InvokeRepeating("CreateBullet", 0.5f, 0.05f);
         RotCounter = 7.0f;
         RotationDirection = 1;
-        SetDefaults();
+        //SetDefaults();
+
+        //foreach (Vector3 v in BulletOrientations)
+        //    Debug.Log(v.z);
 
         Meme = 0;
 
-        //TranslationVector = Quaternion.AngleAxis(Time.deltaTime * (MovementSpeed * 10), Vector3.forward) * TranslationVector;
-        TranslationVector = Quaternion.AngleAxis(20, Vector3.forward) * TranslationVector;
-        transform.position = FocalPoint + TranslationVector;
+        //TranslationVector = Quaternion.AngleAxis(20, Vector3.forward) * TranslationVector;
+        //transform.position = FocalPoint + TranslationVector;
         //transform.Rotate(0, 0, transform.rotation.z + 25f);
+
+        
     }
 
     // Update is called once per frame
@@ -96,7 +112,22 @@ public class BulletEmitter : MonoBehaviour
 
     void CreateBullet()
     {
-        Instantiate(StoredBullet, transform.position, transform.rotation);
+        int count = 1;
+
+        for(int i = 0; i < (int)Math.Pow(NumberOfSpawners, 3); i++)
+        {
+            GameObject o = Instantiate(StoredBullet);
+            o.transform.parent = transform;
+            o.SetActive(false);
+            o.transform.eulerAngles = BulletOrientations[count - 1];
+            Debug.Log(count);
+            //BulletPrefabs.Add(o);
+
+            if (count < NumberOfSpawners)
+                count++;
+            else
+                count = 1;
+        }
     }
 
     void SetDefaults()
@@ -106,5 +137,15 @@ public class BulletEmitter : MonoBehaviour
         RotationAmount = transform.rotation.z;
         FocalPoint = transform.parent.transform.position;
         TranslationVector = transform.position - FocalPoint;
+    }
+
+    void CreateOrientations()
+    {
+        DegreeOfSeparation = 180;
+        NumberOfSpawners = 4;
+        float newsep = DegreeOfSeparation / NumberOfSpawners;
+
+        for (int i = 1; i < NumberOfSpawners + 1; i++)
+            BulletOrientations.Add(new Vector3(0, 0, (newsep * i) - newsep));
     }
 }

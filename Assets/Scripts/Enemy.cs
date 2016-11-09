@@ -27,13 +27,12 @@ public class Enemy : MonoBehaviour
     void CreateEmitters()
     {
         GameObject o = Resources.Load("Prefabs/Bullet Emitter") as GameObject;
-        o.transform.position = transform.position;
+        o.transform.localPosition = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
 
         for (int i = 0; i < NumberOfEmitters; i++)
         {
             Instantiate(o, transform);
             Emitters.Add(o);
-        }
-            
+        } 
     }
 }
