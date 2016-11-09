@@ -37,7 +37,7 @@ public class BulletEmitter : MonoBehaviour
     {
         //gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Prefabs/Test Prefabs/testbullet") as Sprite;
         //Instantiate(StoredBullet, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180));
-        //InvokeRepeating("CreateBullet", 0.5f, 0.05f);
+        //InvokeRepeating("CreateBullet", 0.5f, 0.07f);
         RotCounter = 7.0f;
         RotationDirection = 1;
         //SetDefaults();
@@ -84,6 +84,11 @@ public class BulletEmitter : MonoBehaviour
         //Spin();
     }
 
+    void SpawnBullet()
+    {
+
+    }
+
     private void Rotation()
     {
         MaintainOrientation();
@@ -119,7 +124,8 @@ public class BulletEmitter : MonoBehaviour
             GameObject o = Instantiate(StoredBullet);
             o.transform.parent = transform;
             o.SetActive(false);
-            o.transform.eulerAngles = BulletOrientations[count - 1];
+            //o.transform.eulerAngles = BulletOrientations[count - 1];
+            o.transform.Rotate(/*BulletOrientations[count - 1]*/ new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + BulletOrientations[count - 1].z));
             Debug.Log(count);
             //BulletPrefabs.Add(o);
 
@@ -141,7 +147,7 @@ public class BulletEmitter : MonoBehaviour
 
     void CreateOrientations()
     {
-        DegreeOfSeparation = 180;
+        DegreeOfSeparation = 360;
         NumberOfSpawners = 4;
         float newsep = DegreeOfSeparation / NumberOfSpawners;
 
