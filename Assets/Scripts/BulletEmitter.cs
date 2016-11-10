@@ -16,18 +16,23 @@ public class BulletEmitter : MonoBehaviour
         DegreeOfSeparation, NumberOfSpawners;
     const float MaxMeme = 360f;
     [SerializeField]
+    int BulletPrefabCount, PrefabCountIndexOffset;
+    [SerializeField]
     List<Vector3> BulletOrientations;
     [SerializeField]
     List<GameObject> BulletPrefabs;
 
-
     void Awake()
     {
+        Debug.Log(CameraExtensions.OrthographicBounds(Camera.main));
+
         StoredBullet = Resources.Load("Prefabs/Test Prefabs/testbullet") as GameObject;
         BulletOrientations = new List<Vector3>();
         //transform.Rotate(new Vector3(0, 0, 360f));
 
         CreateOrientations();
+        BulletPrefabCount = (int)Math.Pow(NumberOfSpawners, 3);
+        PrefabCountIndexOffset = BulletPrefabCount;
         BulletPrefabs = new List<GameObject>();
         CreateBullet();
     }
@@ -37,7 +42,7 @@ public class BulletEmitter : MonoBehaviour
     {
         //gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Prefabs/Test Prefabs/testbullet") as Sprite;
         //Instantiate(StoredBullet, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180));
-        //InvokeRepeating("CreateBullet", 0.5f, 0.07f);
+        //InvokeRepeating("SpawnBullet", 0.5f, 0.03f);
         RotCounter = 7.0f;
         RotationDirection = 1;
         //SetDefaults();
@@ -50,8 +55,6 @@ public class BulletEmitter : MonoBehaviour
         //TranslationVector = Quaternion.AngleAxis(20, Vector3.forward) * TranslationVector;
         //transform.position = FocalPoint + TranslationVector;
         //transform.Rotate(0, 0, transform.rotation.z + 25f);
-
-        
     }
 
     // Update is called once per frame
@@ -86,7 +89,8 @@ public class BulletEmitter : MonoBehaviour
 
     void SpawnBullet()
     {
-
+        transform.GetChild(BulletPrefabCount - PrefabCountIndexOffset).gameObject.SetActive(true);
+        PrefabCountIndexOffset--;
     }
 
     private void Rotation()
@@ -101,6 +105,7 @@ public class BulletEmitter : MonoBehaviour
     {
         //transform.Rotate(0, 0, transform.rotation.z + Meme);
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z + Time.deltaTime * 10f);
+        
     }
 
     private void Translation()
@@ -119,14 +124,14 @@ public class BulletEmitter : MonoBehaviour
     {
         int count = 1;
 
-        for(int i = 0; i < (int)Math.Pow(NumberOfSpawners, 3); i++)
+        for(int i = 0; i < BulletPrefabCount; i++)
         {
             GameObject o = Instantiate(StoredBullet);
             o.transform.parent = transform;
             o.SetActive(false);
             //o.transform.eulerAngles = BulletOrientations[count - 1];
-            o.transform.Rotate(/*BulletOrientations[count - 1]*/ new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + BulletOrientations[count - 1].z));
-            Debug.Log(count);
+            o.transform.Rotate(new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + BulletOrientations[count - 1].z));
+            //Debug.Log(count);
             //BulletPrefabs.Add(o);
 
             if (count < NumberOfSpawners)
@@ -148,10 +153,15 @@ public class BulletEmitter : MonoBehaviour
     void CreateOrientations()
     {
         DegreeOfSeparation = 360;
-        NumberOfSpawners = 4;
+        NumberOfSpawners = 6;
         float newsep = DegreeOfSeparation / NumberOfSpawners;
 
         for (int i = 1; i < NumberOfSpawners + 1; i++)
             BulletOrientations.Add(new Vector3(0, 0, (newsep * i) - newsep));
+    }
+
+    public void AddBackToIndex()
+    {
+        PrefabCountIndexOffset++;
     }
 }
