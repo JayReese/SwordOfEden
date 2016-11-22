@@ -16,23 +16,24 @@ public class BulletEmitter : MonoBehaviour
         DegreeOfSeparation, NumberOfSpawners;
     const float MaxMeme = 360f;
     [SerializeField]
-    int BulletPrefabCount, PrefabCountIndexOffset;
+    int ExtraBulletPrefabCount, PrefabCountIndexOffset;
     [SerializeField]
     List<Vector3> BulletOrientations;
     [SerializeField]
     List<GameObject> BulletPrefabs;
-
+    
     void Awake()
     {
-        Debug.Log(CameraExtensions.OrthographicBounds(Camera.main));
+        //Debug.Log(CameraExtensions.OrthographicBounds(Camera.main));
+
 
         StoredBullet = Resources.Load("Prefabs/Test Prefabs/testbullet") as GameObject;
         BulletOrientations = new List<Vector3>();
         //transform.Rotate(new Vector3(0, 0, 360f));
 
         CreateOrientations();
-        BulletPrefabCount = (int)Math.Pow(NumberOfSpawners, 3);
-        PrefabCountIndexOffset = BulletPrefabCount;
+        ExtraBulletPrefabCount = 40;
+        //PrefabCountIndexOffset = ExtraBulletPrefabCount;
         BulletPrefabs = new List<GameObject>();
         CreateBullet();
     }
@@ -87,9 +88,11 @@ public class BulletEmitter : MonoBehaviour
         //Spin();
     }
 
+
+    // Spawns the bullet.
     void SpawnBullet()
     {
-        transform.GetChild(BulletPrefabCount - PrefabCountIndexOffset).gameObject.SetActive(true);
+        //transform.GetChild(BulletPrefabCount - PrefabCountIndexOffset).gameObject.SetActive(true);
         PrefabCountIndexOffset--;
     }
 
@@ -124,7 +127,7 @@ public class BulletEmitter : MonoBehaviour
     {
         int count = 1;
 
-        for(int i = 0; i < BulletPrefabCount; i++)
+        for(int i = 0; i < ExtraBulletPrefabCount; i++)
         {
             GameObject o = Instantiate(StoredBullet);
             o.transform.parent = transform;
@@ -153,7 +156,7 @@ public class BulletEmitter : MonoBehaviour
     void CreateOrientations()
     {
         DegreeOfSeparation = 360;
-        NumberOfSpawners = 6;
+        NumberOfSpawners = 2;
         float newsep = DegreeOfSeparation / NumberOfSpawners;
 
         for (int i = 1; i < NumberOfSpawners + 1; i++)
