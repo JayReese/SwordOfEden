@@ -8,17 +8,12 @@ public static class DatabaseManager
     static string BaseDataPath = Application.dataPath;
 
     // The primary 
-    public static object ReturnQueriedData(DataQueryType type, string objectName, string queryAttr, string queryCateg)
-    {
-        return GetXMLData(type, objectName, queryAttr, queryCateg);
-    }
-
-    public static object ReturnQueriedData(DataQueryType type, string objectName, string queryAttr, string queryCateg, byte idNum)
+    public static object ReturnQueriedData(DataQueryType type, string objectName, string queryAttr, string queryCateg = "", int idNum = 0)
     {
         return GetXMLData(type, objectName, queryAttr, queryCateg, idNum);
     }
 
-    private static object GetXMLData(DataQueryType type, string objectName, string queryAttr, string queryCateg, byte idNum = 0)
+    private static object GetXMLData(DataQueryType type, string objectName, string queryAttr, string queryCateg, int idNum = 0)
     {
         // Returns the file name of the XML file.
         string returnedFile = ReturnXMLFile(type);
@@ -48,11 +43,11 @@ public static class DatabaseManager
                                 // Checks if there's a valid ID number.
                                 if (idNum != 0)
                                     GetCorrectDescendantsOfElement(reader, queryCateg, idNum);
-
-                                // Gets the data queried element.
-                                return RetrieveDataFromQueriesElement(reader, queryAttr); // Returns the data retrieved from the search.
                             }
                         }
+
+                        // Gets the data queried element.
+                        return RetrieveDataFromQueriesElement(reader, queryAttr); // Returns the data retrieved from the search.
                     }
                 }
             }
@@ -62,7 +57,7 @@ public static class DatabaseManager
     }
 
     // Iterates through the descendants recursively.
-    private static void GetCorrectDescendantsOfElement(XmlReader reader, string queryCateg, byte idNum)
+    private static void GetCorrectDescendantsOfElement(XmlReader reader, string queryCateg, int idNum)
     {
         if (reader.GetAttribute("ID") != idNum.ToString())
         {

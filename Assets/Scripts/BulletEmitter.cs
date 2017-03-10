@@ -10,34 +10,32 @@ public class BulletEmitter : MonoBehaviour
     [SerializeField]
     Vector3 FocalPoint, TranslationVector;
     [SerializeField]
-    float MovementSpeed,
-        RotationAmount, RotationTime,
-        Meme, RotCounter, RotationDirection,
-        DegreeOfSeparation, NumberOfSpawners;
-    const float MaxMeme = 360f;
+    byte PatternNumber;
     [SerializeField]
-    int ExtraBulletPrefabCount, PrefabCountIndexOffset;
-    [SerializeField]
-    List<Vector3> BulletOrientations;
+    List<BulletPattern> BulletPatterns;
     [SerializeField]
     List<GameObject> BulletPrefabs;
+    
     
     void Awake()
     {
         //Debug.Log(CameraExtensions.OrthographicBounds(Camera.main));
 
-
         StoredBullet = Resources.Load("Prefabs/Test Prefabs/testbullet") as GameObject;
-        BulletOrientations = new List<Vector3>();
+        //BulletOrientations = new List<Vector3>();
         //transform.Rotate(new Vector3(0, 0, 360f));
 
         //CreateOrientations();
-        ExtraBulletPrefabCount = 40;
+        //ExtraBulletPrefabCount = 40;
         //PrefabCountIndexOffset = ExtraBulletPrefabCount;
-        BulletPrefabs = new List<GameObject>();
+        //BulletPrefabs = new List<GameObject>();
         //CreateBullet();
 
-        Debug.Log(DatabaseManager.ReturnQueriedData(DataQueryType.Enemies, transform.parent.gameObject.name, "Name", "Pattern", 3));
+        SetDefaults();
+
+        //Debug.Log(DatabaseManager.ReturnQueriedData(DataQueryType.Enemies, transform.parent.gameObject.name, "Strength", "Stats"));
+
+        
     }
 
     // Use this for initialization
@@ -78,11 +76,11 @@ public class BulletEmitter : MonoBehaviour
 
     }
 
-    private void ChangeRot()
-    {
-        RotCounter = 7.0f;
-        RotationDirection *= -1;
-    }
+    //private void ChangeRot()
+    //{
+    //    RotCounter = 7.0f;
+    //    RotationDirection *= -1;
+    //}
 
     void Movement()
     {
@@ -95,22 +93,21 @@ public class BulletEmitter : MonoBehaviour
     void SpawnBullet()
     {
         //transform.GetChild(BulletPrefabCount - PrefabCountIndexOffset).gameObject.SetActive(true);
-        PrefabCountIndexOffset--;
+        //PrefabCountIndexOffset--;
     }
 
-    private void Rotation()
-    {
-        MaintainOrientation();
-        TranslationVector = Quaternion.AngleAxis(Time.deltaTime * (MovementSpeed * 10), Vector3.forward * RotationDirection) * TranslationVector;
+    //private void Rotation()
+    //{
+    //    MaintainOrientation();
+    //    TranslationVector = Quaternion.AngleAxis(Time.deltaTime * (MovementSpeed * 10), Vector3.forward * RotationDirection) * TranslationVector;
 
-        transform.position = FocalPoint + TranslationVector;
-    }
+    //    transform.position = FocalPoint + TranslationVector;
+    //}
 
     private void Spin()
     {
         //transform.Rotate(0, 0, transform.rotation.z + Meme);
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z + Time.deltaTime * 10f);
-        
     }
 
     private void Translation()
@@ -127,46 +124,52 @@ public class BulletEmitter : MonoBehaviour
 
     void CreateBullet()
     {
-        int count = 1;
+        //int count = 1;
 
-        for(int i = 0; i < ExtraBulletPrefabCount; i++)
-        {
-            GameObject o = Instantiate(StoredBullet);
-            o.transform.parent = transform;
-            o.SetActive(false);
-            //o.transform.eulerAngles = BulletOrientations[count - 1];
-            o.transform.Rotate(new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + BulletOrientations[count - 1].z));
-            //Debug.Log(count);
-            //BulletPrefabs.Add(o);
+        //for(int i = 0; i < ExtraBulletPrefabCount; i++)
+        //{
+        //    GameObject o = Instantiate(StoredBullet);
+        //    o.transform.parent = transform;
+        //    o.SetActive(false);
+        //    //o.transform.eulerAngles = BulletOrientations[count - 1];
+        //    //o.transform.Rotate(new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z + BulletOrientations[count - 1].z));
+        //    //Debug.Log(count);
+        //    //BulletPrefabs.Add(o);
 
-            if (count < NumberOfSpawners)
-                count++;
-            else
-                count = 1;
-        }
+        //    //if (count < NumberOfSpawners)
+        //    //    count++;
+        //    //else
+        //    //    count = 1;
+        //}
+
     }
 
     void SetDefaults()
     {
-        MovementSpeed = 15f;
-        RotationTime = 30f;
-        RotationAmount = transform.rotation.z;
-        FocalPoint = transform.parent.transform.position;
-        TranslationVector = transform.position - FocalPoint;
+        PatternNumber = Convert.ToByte(DatabaseManager.ReturnQueriedData(DataQueryType.Enemies, transform.parent.gameObject.name, "PatternCount"));
+        BulletPatterns = new List<BulletPattern>();
+
+        CreateBulletPatterns();
     }
 
     void CreateOrientations()
     {
-        DegreeOfSeparation = 360;
-        NumberOfSpawners = 2;
-        float newsep = DegreeOfSeparation / NumberOfSpawners;
+        //DegreeOfSeparation = 360;
+        //NumberOfSpawners = 2;
+        //float newsep = DegreeOfSeparation / NumberOfSpawners;
 
-        for (int i = 1; i < NumberOfSpawners + 1; i++)
-            BulletOrientations.Add(new Vector3(0, 0, (newsep * i) - newsep));
+        //for (int i = 1; i < NumberOfSpawners + 1; i++)
+        //    BulletOrientations.Add(new Vector3(0, 0, (newsep * i) - newsep));
     }
 
     public void AddBackToIndex()
     {
-        PrefabCountIndexOffset++;
+        //PrefabCountIndexOffset++;
+    }
+
+    void CreateBulletPatterns()
+    {
+        for (int i = 0; i < PatternNumber; i++)
+            BulletPatterns.Add(new BulletPattern(i + 1, transform.parent.gameObject.name));
     }
 }
