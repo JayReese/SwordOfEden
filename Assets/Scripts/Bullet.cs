@@ -31,6 +31,4 @@ public class Bullet : MonoBehaviour
         emitter.GetComponent<BulletEmitter>().AddBackToIndex();
         gameObject.SetActive(false);
     }
-
-
 }

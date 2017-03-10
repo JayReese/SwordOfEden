@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public static class CameraExtensions
+public enum EmitterMovement { Static, Orbit };
+
+public enum DataQueryType { Enemies };
+
+public static class Globals
 {
+    // The camea's orthographic bounds extensivon method.
     public static Bounds OrthographicBounds(this Camera camera)
     {
         float screenAspect = (float)Screen.width / (float)Screen.height;

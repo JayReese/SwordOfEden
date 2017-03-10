@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Enemies>
+    <Enemy Name="Malice">
+      <Visuals  />
+      <Stats HP="300" Strength="1" />
+
+      <Patterns>
+        <Pattern ID="1" />
+        <Pattern ID="2" />
+        <Pattern ID="3" />
+        <Pattern ID="4" />
+      </Patterns>
+    </Enemy>
+</Enemies>

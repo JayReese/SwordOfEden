@@ -36,6 +36,8 @@ public class BulletEmitter : MonoBehaviour
         //PrefabCountIndexOffset = ExtraBulletPrefabCount;
         BulletPrefabs = new List<GameObject>();
         CreateBullet();
+
+        Debug.Log(DatabaseManager.ReturnQueriedData(DataQueryType.Enemies, gameObject.name, "Strength", "Stats"));
     }
 
     // Use this for initialization
