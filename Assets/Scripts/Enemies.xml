@@ -8,7 +8,19 @@
       <Patterns>
         <Pattern ID="1" />
         <Pattern ID="2" />
-        <Pattern ID="3" />
+        <Pattern ID="3" Name="Bullet Pattern 3" />
+        <Pattern ID="4" />
+      </Patterns>
+    </Enemy>
+
+    <Enemy Name="Test Enemy">
+      <Visuals  />
+      <Stats HP="45" Strength="2" />
+
+      <Patterns>
+        <Pattern ID="1" />
+        <Pattern ID="2" />
+        <Pattern ID="3" Name="Bullet Pattern 1000" />
         <Pattern ID="4" />
       </Patterns>
     </Enemy>

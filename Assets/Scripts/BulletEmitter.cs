@@ -31,13 +31,13 @@ public class BulletEmitter : MonoBehaviour
         BulletOrientations = new List<Vector3>();
         //transform.Rotate(new Vector3(0, 0, 360f));
 
-        CreateOrientations();
+        //CreateOrientations();
         ExtraBulletPrefabCount = 40;
         //PrefabCountIndexOffset = ExtraBulletPrefabCount;
         BulletPrefabs = new List<GameObject>();
-        CreateBullet();
+        //CreateBullet();
 
-        Debug.Log(DatabaseManager.ReturnQueriedData(DataQueryType.Enemies, gameObject.name, "Strength", "Stats"));
+        Debug.Log(DatabaseManager.ReturnQueriedData(DataQueryType.Enemies, transform.parent.gameObject.name, "Name", "Pattern", 3));
     }
 
     // Use this for initialization
@@ -46,14 +46,14 @@ public class BulletEmitter : MonoBehaviour
         //gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load("Prefabs/Test Prefabs/testbullet") as Sprite;
         //Instantiate(StoredBullet, transform.position, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180));
         //InvokeRepeating("SpawnBullet", 0.5f, 0.03f);
-        RotCounter = 7.0f;
-        RotationDirection = 1;
+        //RotCounter = 7.0f;
+        //RotationDirection = 1;
         //SetDefaults();
 
         //foreach (Vector3 v in BulletOrientations)
         //    Debug.Log(v.z);
 
-        Meme = 0;
+        //Meme = 0;
 
         //TranslationVector = Quaternion.AngleAxis(20, Vector3.forward) * TranslationVector;
         //transform.position = FocalPoint + TranslationVector;

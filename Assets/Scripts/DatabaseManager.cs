@@ -33,24 +33,29 @@ public static class DatabaseManager
             // While we're still reading the XML file, continue.
             while (reader.Read())
             {
+                
+
                 // Reads the XML node, and determines if it's an element and it isn't the root.
                 if (reader.NodeType == XmlNodeType.Element)
                 {
                     //while (reader.GetAttribute("Name") != objectName)
                     //    continue;
 
-                    // If it's anything else but the name, you must also have the category filled out.
-                    if (queryCateg != string.Empty)
+                    if(reader.GetAttribute("Name") == objectName)
                     {
-                        // Reads to the next descendant.
-                        if (reader.ReadToDescendant(queryCateg))
+                        // If it's anything else but the name, you must also have the category filled out.
+                        if (queryCateg != string.Empty)
                         {
-                            // Checks if there's a valid ID number.
-                            if(idNum != 0)
-                                GetCorrectDescendantsOfElement(reader, queryCateg, idNum);
+                            // Reads to the next descendant.
+                            if (reader.ReadToDescendant(queryCateg))
+                            {
+                                // Checks if there's a valid ID number.
+                                if (idNum != 0)
+                                    GetCorrectDescendantsOfElement(reader, queryCateg, idNum);
 
-                            // Gets the data queried element.
-                            return RetrieveDataFromQueriesElement(reader, queryAttr); // Returns the data retrieved from the search.
+                                // Gets the data queried element.
+                                return RetrieveDataFromQueriesElement(reader, queryAttr); // Returns the data retrieved from the search.
+                            }
                         }
                     }
                 }
@@ -58,6 +63,16 @@ public static class DatabaseManager
          }
 
        return null;
+    }
+
+    // Get correct enemy element recursively.
+    private static void GetCorrectEnemyElement(XmlReader reader, string objectName)
+    {
+        if(reader.GetAttribute("Name") != objectName)
+        {
+            reader.ReadToNextSibling("Enemy");
+            GetCorrectEnemyElement(reader, objectName);
+        }
     }
 
     // Iterates through the descendants recursively.
