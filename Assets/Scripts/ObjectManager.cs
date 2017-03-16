@@ -13,9 +13,9 @@ public static class ObjectManager
 
     static void SetDefaults()
     {
-        for (int i = 0; i < 1024; i++)
-        {
+        //for (int i = 0; i < 1024; i++)
+        //{
 
-        }
+        //}
     }
 }

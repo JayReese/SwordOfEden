@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     List<GameObject> Emitters;
-    byte NumberOfEmitters;
+    public byte NumberOfEmitters { get; private set; }
 
 	// Use this for initialization
 	void Start ()
@@ -27,12 +27,12 @@ public class Enemy : MonoBehaviour
     void CreateEmitters()
     {
         GameObject o = Resources.Load("Prefabs/Bullet Emitter") as GameObject;
-        o.transform.localPosition = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
+        o.transform.localPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
 
-        //for (int i = 0; i < NumberOfEmitters; i++)
-        //{
-        //    Instantiate(o, transform);
-        //    Emitters.Add(o);
-        //} 
+        for (int i = 0; i < NumberOfEmitters; i++)
+        {
+            //Emitters.Add(o);
+            Instantiate(o, transform);
+        }
     }
 }
