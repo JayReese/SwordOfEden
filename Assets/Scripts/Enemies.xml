@@ -19,13 +19,17 @@
 
       <Patterns>
         <Pattern ID="1"
-                 BulletSpeed="30" />
+                 EmitterCount="2" EmitterArrayCount="1" EmitterDegOfSep="90" EmitterArrayDegOfSep="90"
+                 BulletSpeed="30" BulletAccel="10" />
         <Pattern ID="2"
-                 BulletSpeed="50" />
+                 EmitterCount="4" EmitterArrayCount="5" EmitterDegOfSep="60" EmitterArrayDegOfSep="30"
+                 BulletSpeed="80" BulletAccel="0" />
         <Pattern ID="3"
-                 BulletSpeed="80" />
+                 EmitterCount="1" EmitterArrayCount="5" EmitterDegOfSep="20" EmitterArrayDegOfSep="55"
+                 BulletSpeed="20" BulletAccel="30" />
         <Pattern ID="4"
-                 BulletSpeed="120" />
+                 EmitterCount="3" EmitterArrayCount="2" EmitterDegOfSep="70" EmitterArrayDegOfSep="80"
+                 BulletSpeed="50" BulletAccel="-10" />
       </Patterns>
     </Enemy>
 </Enemies>

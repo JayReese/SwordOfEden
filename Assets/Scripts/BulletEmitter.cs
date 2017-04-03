@@ -9,12 +9,6 @@ public class BulletEmitter : MonoBehaviour
     GameObject StoredBullet;
     [SerializeField]
     Vector3 FocalPoint, TranslationVector;
-    [SerializeField]
-    byte PatternNumber;
-    [SerializeField]
-    List<BulletPattern> BulletPatterns;
-    [SerializeField]
-    List<GameObject> BulletPrefabs;
     
     
     void Awake()
@@ -30,6 +24,9 @@ public class BulletEmitter : MonoBehaviour
         //PrefabCountIndexOffset = ExtraBulletPrefabCount;
         //BulletPrefabs = new List<GameObject>();
         //CreateBullet();
+
+        
+
 
         SetDefaults();
 
@@ -146,10 +143,7 @@ public class BulletEmitter : MonoBehaviour
 
     void SetDefaults()
     {
-        PatternNumber = Convert.ToByte(DatabaseManager.ReturnQueriedData(DataQueryType.Enemies, transform.parent.gameObject.name, "PatternCount"));
-        BulletPatterns = new List<BulletPattern>();
-
-        CreateBulletPatterns();
+        
     }
 
     void CreateOrientations()
@@ -165,11 +159,5 @@ public class BulletEmitter : MonoBehaviour
     public void AddBackToIndex()
     {
         //PrefabCountIndexOffset++;
-    }
-
-    void CreateBulletPatterns()
-    {
-        for (int i = 0; i < PatternNumber; i++)
-            BulletPatterns.Add(new BulletPattern(i + 1, transform.parent.gameObject.name));
     }
 }
